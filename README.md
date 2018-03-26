@@ -31,6 +31,24 @@ Usage
 
 ```js
 const JsonAsty = require("json-asty")
+
+let json = `{
+    "foo": {
+        "bar": true ,
+        "baz": 42.0,
+        "quux": [ "test1\\"test2", "test3" ]
+    }
+}`
+
+let ast = JsonAsty.parse(json)
+
+console.log(JsonAsty.dump(ast, { colors: true }))
+
+let json2 = JsonAsty.unparse(ast)
+
+if (json !== json2)
+    throw new Error("failed to unparse AST into equal JSON")
+
 ```
 
 License
