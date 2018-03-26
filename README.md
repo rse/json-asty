@@ -38,7 +38,7 @@ const JsonAsty = require("json-asty")
 /*  the JSON input  */
 let json = `{
     "foo": {
-        "bar": true ,
+        "bar": true,
         "baz": 42.0,
         "quux": [ "test1\\"test2", "test3" ]
     }
@@ -85,7 +85,7 @@ Output:
 JSON (old):
 {
     "foo": {
-        "bar": true ,
+        "bar": true,
         "baz": 42.0,
         "quux": [ "test1\"test2", "test3" ]
     }
@@ -108,7 +108,7 @@ json [1,1]
         │           │   ├── text-sep (text: ": ") [3,14]
         │           │   └── object-member-value [3,16]
         │           │       └── value-boolean (text: "true", value: true) [3,16]
-        │           ├── text-sep (text: " ,\n        ") [3,20]
+        │           ├── text-sep (text: ",\n        ") [3,20]
         │           ├── object-member [4,9]
         │           │   ├── object-member-name [4,9]
         │           │   │   └── value-string (text: "\"baz\"", value: "baz") [4,9]
@@ -157,7 +157,7 @@ object-member-value [4,16]
 JSON (new):
 {
     "foo": {
-        "bar": true ,
+        "bar": true,
         "baz": "TEST",
         "quux": [ "test1\"test2", "test3" ]
     }

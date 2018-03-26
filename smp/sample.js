@@ -4,7 +4,7 @@ const JsonAsty = require("..")
 /*  the JSON input  */
 let json = `{
     "foo": {
-        "bar": true ,
+        "bar": true,
         "baz": 42.0,
         "quux": [ "test1\\"test2", "test3" ]
     }
