@@ -13,11 +13,15 @@ Lossless JSON-to-AST Parser and AST-to-JSON Generator
 About
 -----
 
-JSON-ASTy is a JavaScript library, providing a lossless JavaScript
-Object Notation (JSON) to Abstract Syntax Tree (AST) parser and an AST
-to JSON generator. It is intended for cases where one has to read JSON
-into an AST, manipulate the AST and generate JSON from the AST again
-while fully preserving the formatting of the original JSON.
+JSON-ASTy is a JavaScript library providing a lossless JavaScript Object
+Notation (JSON) to Abstract Syntax Tree (AST) parser and a corresponding
+AST to JSON generator. It is intended for cases where one has to read
+JSON into an AST, manipulate the AST and generate JSON from the AST
+again while fully preserving the formatting of the original JSON.
+
+The AST is based on [ASTy-ASTq](http://npmjs.com/asty-astq), and
+hence can powerfully queried with [ASTq](http://npmjs.com/astq), and
+manipulated with [ASTy](http://npmjs.com/asty).
 
 Installation
 ------------
