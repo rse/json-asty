@@ -90,16 +90,26 @@ class JsonAsty {
 
         /*  walk the AST  */
         let json = ""
-        ast.walk((node /*, depth, parent, when */) => {
-            let text = node.get("text")
-            if (text !== undefined)
-                json += text
-            else {
-                let value = node.get("value")
-                if (value !== undefined)
-                    json += JSON.stringify(value)
+        ast.walk((node, depth, parent, when) => {
+            if (when === "downward") {
+                let prolog = node.get("prolog")
+                if (prolog !== undefined)
+                    json += prolog
+                let body = node.get("body")
+                if (body !== undefined)
+                    json += body
+                else {
+                    let value = node.get("value")
+                    if (value !== undefined)
+                        json += JSON.stringify(value)
+                }
             }
-        }, "downward")
+            else if (when === "upward") {
+                let epilog = node.get("epilog")
+                if (epilog !== undefined)
+                    json += epilog
+            }
+        }, "both")
         return json
     }
 }

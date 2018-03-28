@@ -6,7 +6,7 @@ let json = `{
     "foo": {
         "bar": true,
         "baz": 42.0,
-        "quux": [ "test1\\"test2", "test3" ]
+        "quux": [ "test1\\"test2", "test3", 7, true ]
     }
 }`
 console.log(`JSON (old):\n${json}`)
@@ -17,16 +17,14 @@ console.log(`AST Dump (all):\n${JsonAsty.dump(ast, { colors: true })}`)
 
 /*  the AST query  */
 let query = `
-    .// object-member [
-        ..// object-member [
-            / object-member-name
-                / value-string [ @value == "foo" ]
+    .// member [
+        ..// member [
+            / string [ pos() == 1 && @value == "foo" ]
         ]
         &&
-        / object-member-name
-            / value-string [ @value == "baz" ]
+        / string [ pos() == 1 && @value == "baz" ]
     ]
-        / object-member-value
+        / * [ pos() == 2 ]
 `
 console.log(`AST Query:\n${query}`)
 
@@ -36,8 +34,8 @@ let node = nodes[0]
 console.log(`AST Dump (sub, old):\n${node.dump()}`)
 
 /*  manipulate AST node  */
-node.childs().forEach((child) => node.del(child))
-node.add(node.create("value-string").set({ value: "TEST" }))
+let nodeNew = node.create("string").set({ value: "TEST" })
+node.parent().del(node).add(nodeNew)
 console.log(`AST Dump (sub, new):\n${node.dump()}`)
 
 /*  unparse AST into JSON  */

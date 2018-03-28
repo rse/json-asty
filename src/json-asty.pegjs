@@ -23,22 +23,17 @@
 */
 
 {
-    var unroll = options.util.makeUnroll(location, options)
-    var ast    = options.util.makeAST   (location, options)
+    var ast = options.util.makeAST(location, options)
 }
 
 json
-    =   prolog:(ws {
-            return ast("text-prolog").set({ text: text() })
-        })?
-        value:(value:value {
-            return ast("json-value").add(value)
-        })
-        epilog:(ws {
-            return ast("text-epilog").set({ text: text() })
-        })?
+    =   prolog:ws?
+        value:value
+        epilog:ws?
         eof {
-            return ast("json").add(prolog, value, epilog)
+            if (prolog) value.set("prolog", prolog + (value.get("prolog") || ""))
+            if (epilog) value.set("epilog", (value.get("epilog") || "") + epilog)
+            return value
         }
 
 value
@@ -51,60 +46,53 @@ value
     /   valueTrue
 
 valueObject
-    =   prolog:(ws? "{" ws? {
-            return ast("text-prolog").set({ text: text() })
-        })
+    =   prolog:$(ws? "{" ws?)
         members:(
             head:member
             tail:(
-                sep:(ws? "," ws? {
-                    return ast("text-sep").set({ text: text() })
-                })
+                $(ws? "," ws?)
                 member
             )* {
-                return tail.reduce((memo, curr) => memo.concat(curr), [ head ])
+                return tail.reduce((memo, curr) => {
+                    memo[memo.length - 1].set({ epilog: curr[0] })
+                    return memo.concat([ curr[1] ])
+                }, [ head ])
             }
         )?
-        epilog:(ws? "}" ws? {
-            return ast("text-epilog").set({ text: text() })
-        }) {
-            return ast("value-object").add(prolog, members, epilog)
+        epilog:$(ws? "}" ws?) {
+            return ast("object")
+                .set({ prolog: prolog })
+                .set({ epilog: epilog })
+                .add(members)
         }
 
 member
-    =   name:(name:valueString {
-            return ast("object-member-name").add(name)
-        })
-        sep:(ws? ":" ws? {
-            return ast("text-sep").set({ text: text() })
-        })
-        value:(value:value { /* RECURSION */
-            return ast("object-member-value").add(value)
-        }) {
-            return ast("object-member").add(name, sep, value)
+    =   name:valueString
+        sep:$(ws? ":" ws?)
+        value:value { /* RECURSION */
+            return ast("member")
+                .add(name.set({ epilog: sep }), value)
         }
 
 valueArray
-    =   prolog:($(ws? "[" ws?) {
-            return ast("text-prolog").set({ text: text() })
-        })
+    =   prolog:$(ws? "[" ws?)
         values:(
             head:value /* RECURSION */
             tail:(
-                sep:(ws? "," ws? {
-                    return ast("text-sep").set({ text: text() })
-                })
+                $(ws? "," ws?)
                 value /* RECURSION */
             )* {
-                return tail
-                    .reduce((memo, curr) => memo.concat(curr), [ head ])
-                    .map((node) => ast("array-value").add(node))
+                return tail.reduce((memo, curr) => {
+                    memo[memo.length - 1].set({ epilog: curr[0] })
+                    return memo.concat([ curr[1] ])
+                }, [ head ])
             }
         )?
-        epilog:($(ws? "]" ws?) {
-            return ast("text-epilog").set({ text: text() })
-        }) {
-            return ast("value-array").add(prolog, values, epilog)
+        epilog:$(ws? "]" ws?) {
+            return ast("array")
+                .set({ prolog: prolog })
+                .set({ epilog: epilog })
+                .add(values)
         }
 
 valueNumber "number literal value"
@@ -112,7 +100,7 @@ valueNumber "number literal value"
         int:("0" / ([1-9] [0-9]*))
         frac:("." [0-9]+)?
         exp:([eE] ("-" / "+")? [0-9]+)? {
-            return ast("value-number").set({ text: text(), value: parseFloat(text()) })
+            return ast("number").set({ body: text(), value: parseFloat(text()) })
         }
 
 valueString "quoted string literal value"
@@ -136,22 +124,22 @@ valueString "quoted string literal value"
             }
         )*
         '"' {
-            return ast("value-string").set({ text: text(), value: chars.join("") })
+            return ast("string").set({ body: text(), value: chars.join("") })
         }
 
 valueNull "object null literal value"
     =   "null" {
-            return ast("value-null").set({ text: text(), value: null })
+            return ast("null").set({ body: text(), value: null })
         }
 
 valueFalse "boolean false literal value"
     =   "false" {
-            return ast("value-boolean").set({ text: text(), value: false })
+            return ast("boolean").set({ body: text(), value: false })
         }
 
 valueTrue "boolean true literal value"
     =   "true" {
-            return ast("value-boolean").set({ text: text(), value: true })
+            return ast("boolean").set({ body: text(), value: true })
         }
 
 ws "whitespace"
