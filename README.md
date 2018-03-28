@@ -40,7 +40,7 @@ let json = `{
     "foo": {
         "bar": true,
         "baz": 42.0,
-        "quux": [ "test1\\"test2", "test3" ]
+        "quux": [ "test1\\"test2", "test3", 7, true ]
     }
 }`
 console.log(`JSON (old):\n${json}`)
@@ -51,16 +51,14 @@ console.log(`AST Dump (all):\n${JsonAsty.dump(ast, { colors: true })}`)
 
 /*  the AST query  */
 let query = `
-    .// object-member [
-        ..// object-member [
-            / object-member-name
-                / value-string [ @value == "foo" ]
+    .// member [
+        ..// member [
+            / string [ pos() == 1 && @value == "foo" ]
         ]
         &&
-        / object-member-name
-            / value-string [ @value == "baz" ]
+        / string [ pos() == 1 && @value == "baz" ]
     ]
-        / object-member-value
+        / * [ pos() == 2 ]
 `
 console.log(`AST Query:\n${query}`)
 
@@ -70,8 +68,8 @@ let node = nodes[0]
 console.log(`AST Dump (sub, old):\n${node.dump()}`)
 
 /*  manipulate AST node  */
-node.childs().forEach((child) => node.del(child))
-node.add(node.create("value-string").set({ value: "TEST" }))
+let nodeNew = node.create("string").set({ value: "TEST" })
+node.parent().del(node).add(nodeNew)
 console.log(`AST Dump (sub, new):\n${node.dump()}`)
 
 /*  unparse AST into JSON  */
@@ -87,79 +85,51 @@ JSON (old):
     "foo": {
         "bar": true,
         "baz": 42.0,
-        "quux": [ "test1\"test2", "test3" ]
+        "quux": [ "test1\"test2", "test3", 7, true ]
     }
 }
 AST Dump (all):
-json [1,1]
-└── json-value [1,1]
-    └── value-object [1,1]
-        ├── text-prolog (text: "{\n    ") [1,1]
-        ├── object-member [2,5]
-        │   ├── object-member-name [2,5]
-        │   │   └── value-string (text: "\"foo\"", value: "foo") [2,5]
-        │   ├── text-sep (text: ": ") [2,10]
-        │   └── object-member-value [2,12]
-        │       └── value-object [2,12]
-        │           ├── text-prolog (text: "{\n        ") [2,12]
-        │           ├── object-member [3,9]
-        │           │   ├── object-member-name [3,9]
-        │           │   │   └── value-string (text: "\"bar\"", value: "bar") [3,9]
-        │           │   ├── text-sep (text: ": ") [3,14]
-        │           │   └── object-member-value [3,16]
-        │           │       └── value-boolean (text: "true", value: true) [3,16]
-        │           ├── text-sep (text: ",\n        ") [3,20]
-        │           ├── object-member [4,9]
-        │           │   ├── object-member-name [4,9]
-        │           │   │   └── value-string (text: "\"baz\"", value: "baz") [4,9]
-        │           │   ├── text-sep (text: ": ") [4,14]
-        │           │   └── object-member-value [4,16]
-        │           │       └── value-number (text: "42.0", value: 42) [4,16]
-        │           ├── text-sep (text: ",\n        ") [4,20]
-        │           ├── object-member [5,9]
-        │           │   ├── object-member-name [5,9]
-        │           │   │   └── value-string (text: "\"quux\"", value: "quux") [5,9]
-        │           │   ├── text-sep (text: ": ") [5,15]
-        │           │   └── object-member-value [5,17]
-        │           │       └── value-array [5,17]
-        │           │           ├── text-prolog (text: "[ ") [5,17]
-        │           │           ├── array-value [5,19]
-        │           │           │   └── value-string (text: "\"test1\\\"test2\"", value: "test1\"test2") [5,19]
-        │           │           ├── array-value [5,19]
-        │           │           │   └── text-sep (text: ", ") [5,33]
-        │           │           ├── array-value [5,19]
-        │           │           │   └── value-string (text: "\"test3\"", value: "test3") [5,35]
-        │           │           └── text-epilog (text: " ]\n    ") [5,42]
-        │           └── text-epilog (text: "}\n") [6,5]
-        └── text-epilog (text: "}") [7,1]
+object (prolog: "{\n    ", epilog: "}") [1,1]
+└── member [2,5]
+    ├── string (body: "\"foo\"", value: "foo", epilog: ": ") [2,5]
+    └── object (prolog: "{\n        ", epilog: "}\n") [2,12]
+        ├── member (epilog: ",\n        ") [3,9]
+        │   ├── string (body: "\"bar\"", value: "bar", epilog: ": ") [3,9]
+        │   └── boolean (body: "true", value: true) [3,16]
+        ├── member (epilog: ",\n        ") [4,9]
+        │   ├── string (body: "\"baz\"", value: "baz", epilog: ": ") [4,9]
+        │   └── number (body: "42.0", value: 42) [4,16]
+        └── member [5,9]
+            ├── string (body: "\"quux\"", value: "quux", epilog: ": ") [5,9]
+            └── array (prolog: "[ ", epilog: " ]\n    ") [5,17]
+                ├── string (body: "\"test1\\\"test2\"", value: "test1\"test2", epilog: ", ") [5,19]
+                ├── string (body: "\"test3\"", value: "test3", epilog: ", ") [5,35]
+                ├── number (body: "7", value: 7, epilog: ", ") [5,44]
+                └── boolean (body: "true", value: true) [5,47]
 
 AST Query:
 
-    .// object-member [
-        ..// object-member [
-            / object-member-name
-                / value-string [ @value == "foo" ]
+    .// member [
+        ..// member [
+            / string [ pos() == 1 && @value == "foo" ]
         ]
         &&
-        / object-member-name
-            / value-string [ @value == "baz" ]
+        / string [ pos() == 1 && @value == "baz" ]
     ]
-        / object-member-value
+        / * [ pos() == 2 ]
 
 AST Dump (sub, old):
-object-member-value [4,16]
-└── value-number (text: "42.0", value: 42) [4,16]
+number (body: "42.0", value: 42) [4,16]
 
 AST Dump (sub, new):
-object-member-value [4,16]
-└── value-string (value: "TEST") [0,0]
+number (body: "42.0", value: 42) [4,16]
 
 JSON (new):
 {
     "foo": {
         "bar": true,
         "baz": "TEST",
-        "quux": [ "test1\"test2", "test3" ]
+        "quux": [ "test1\"test2", "test3", 7, true ]
     }
 }
 ```
