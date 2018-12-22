@@ -46,19 +46,15 @@ module.exports = function (grunt) {
                         [ "envify", { PLATFORM: "browser" } ],
                         [ "babelify", {
                             presets: [
-                                [ "env", {
+                                [ "@babel/preset-env", {
                                     "targets": {
-                                        "browser": [ "last 2 versions" ]
+                                        "browsers": "last 2 versions, > 1%, ie 11"
                                     }
-                                } ],
-                                "stage-3",
-                                "stage-2"
+                                } ]
                             ],
-                            plugins: [ [ "transform-runtime", {
+                            plugins: [ [ "@babel/plugin-transform-runtime", {
                                 "helpers":     false,
-                                "polyfill":    false,
-                                "regenerator": false,
-                                "moduleName":  "babel-runtime"
+                                "regenerator": false
                             } ] ]
                         } ],
                         [ "uglifyify", { sourceMap: false, global: true } ],
@@ -83,19 +79,15 @@ module.exports = function (grunt) {
                         [ "envify", { PLATFORM: "node" } ],
                         [ "babelify", {
                             presets: [
-                                [ "env", {
+                                [ "@babel/preset-env", {
                                     "targets": {
-                                        "node": "6.0"
+                                        "node": "8.0.0"
                                     }
-                                } ],
-                                "stage-3",
-                                "stage-2"
+                                } ]
                             ],
-                            plugins: [ [ "transform-runtime", {
+                            plugins: [ [ "@babel/plugin-transform-runtime", {
                                 "helpers":     false,
-                                "polyfill":    false,
-                                "regenerator": false,
-                                "moduleName":  "babel-runtime"
+                                "regenerator": false
                             } ] ]
                         } ],
                         [ "uglifyify", { sourceMap: false, global: true } ],
