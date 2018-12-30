@@ -103,7 +103,7 @@ module.exports = function (grunt) {
                         "pegjs-util"
                     ],
                     browserifyOptions: {
-                        standalone: "Sieving",
+                        standalone: "JsonAsty",
                         debug: false
                     }
                 }
