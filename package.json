@@ -10,14 +10,11 @@
         "url":  "https://github.com/rse/json-asty.git"
     },
     "author": {
-        "name":  "Ralf S. Engelschall",
+        "name":  "Dr. Ralf S. Engelschall",
         "email": "rse@engelschall.com",
         "url":   "http://engelschall.com"
     },
-    "licenses": [{
-        "type": "MIT",
-        "url":  "http://opensource.org/licenses/MIT"
-    }],
+    "license":  "MIT",
     "homepage": "https://github.com/rse/json-asty",
     "bugs":     "https://github.com/rse/json-asty/issues",
     "dependencies": {

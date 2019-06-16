@@ -1,6 +1,6 @@
 ##
 ##  JSON-ASTy -- Lossless JSON-to-AST Parser and AST-to-JSON Generator
-##  Copyright (c) 2018 Ralf S. Engelschall <rse@engelschall.com>
+##  Copyright (c) 2018-2019 Dr. Ralf S. Engelschall <rse@engelschall.com>
 ##
 ##  Permission is hereby granted, free of charge, to any person obtaining
 ##  a copy of this software and associated documentation files (the
