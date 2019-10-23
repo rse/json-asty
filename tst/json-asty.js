@@ -36,7 +36,7 @@ describe("JSON-ASTy Library", () => {
     })
     it("base functionality", () => {
         /* eslint quotes: off */
-        let samples = [
+        const samples = [
             "true", "false", "null",
             "42", "42.7", "42.7e-10",
             '"foo"', '"foo bar"', '"foo\\"bar"',
