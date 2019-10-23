@@ -44,7 +44,7 @@ class JsonAsty {
 
         /*  parse specification into Abstract Syntax Tree (AST)  */
         const asty = new ASTY()
-        let result = PEGUtil.parse(PEGparser, json, {
+        const result = PEGUtil.parse(PEGparser, json, {
             startRule: "json",
             makeAST: (line, column, offset, args) => {
                 return asty.create.apply(asty, args).pos(line, column, offset)
@@ -92,20 +92,20 @@ class JsonAsty {
         let json = ""
         ast.walk((node, depth, parent, when) => {
             if (when === "downward") {
-                let prolog = node.get("prolog")
+                const prolog = node.get("prolog")
                 if (prolog !== undefined)
                     json += prolog
-                let body = node.get("body")
+                const body = node.get("body")
                 if (body !== undefined)
                     json += body
                 else {
-                    let value = node.get("value")
+                    const value = node.get("value")
                     if (value !== undefined)
                         json += JSON.stringify(value)
                 }
             }
             else if (when === "upward") {
-                let epilog = node.get("epilog")
+                const epilog = node.get("epilog")
                 if (epilog !== undefined)
                     json += epilog
             }
