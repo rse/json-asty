@@ -29,7 +29,7 @@ const PEGUtil     = require("pegjs-util")
 const chalk       = require("chalk")
 
 /*  pre-parse PEG grammar (replaced by browserify)  */
-var PEGparser = PEG.generateFromFile(`${__dirname}/json-asty.pegjs`, {
+const PEGparser = PEG.generateFromFile(`${__dirname}/json-asty.pegjs`, {
     optimize: "size",
     trace: false
 })
