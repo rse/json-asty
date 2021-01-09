@@ -18,7 +18,7 @@
     "homepage": "https://github.com/rse/json-asty",
     "bugs":     "https://github.com/rse/json-asty/issues",
     "dependencies": {
-        "asty-astq":                                 "1.13.1",
+        "asty-astq":                                 "1.13.4",
         "pegjs-otf":                                 "1.2.17",
         "pegjs-util":                                "1.4.20",
         "chalk":                                     "4.1.0"
@@ -36,9 +36,9 @@
         "babelify":                                  "10.0.0",
         "babel-eslint":                              "10.1.0",
         "uglifyify":                                 "5.0.2",
-        "browserify-header":                         "1.0.1",
-        "browserify-derequire":                      "1.0.1",
-        "eslint":                                    "7.16.0",
+        "browserify-header":                         "1.1.0",
+        "browserify-derequire":                      "1.1.1",
+        "eslint":                                    "7.17.0",
         "eslint-config-standard":                    "16.0.2",
         "eslint-plugin-promise":                     "4.2.1",
         "eslint-plugin-import":                      "2.22.1",
