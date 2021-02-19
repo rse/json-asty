@@ -19,8 +19,8 @@
     "bugs":     "https://github.com/rse/json-asty/issues",
     "dependencies": {
         "asty-astq":                                 "1.13.4",
-        "pegjs-otf":                                 "1.2.17",
-        "pegjs-util":                                "1.4.20",
+        "pegjs-otf":                                 "1.2.18",
+        "pegjs-util":                                "1.4.21",
         "chalk":                                     "4.1.0"
     },
     "devDependencies": {
@@ -38,16 +38,16 @@
         "uglifyify":                                 "5.0.2",
         "browserify-header":                         "1.1.0",
         "browserify-derequire":                      "1.1.1",
-        "eslint":                                    "7.17.0",
+        "eslint":                                    "7.20.0",
         "eslint-config-standard":                    "16.0.2",
-        "eslint-plugin-promise":                     "4.2.1",
+        "eslint-plugin-promise":                     "4.3.1",
         "eslint-plugin-import":                      "2.22.1",
         "eslint-plugin-node":                        "11.1.0",
-        "@babel/core":                               "7.12.10",
-        "@babel/preset-env":                         "7.12.11",
-        "@babel/plugin-transform-runtime":           "7.12.10",
-        "mocha":                                     "8.2.1",
-        "chai":                                      "4.2.0"
+        "@babel/core":                               "7.12.17",
+        "@babel/preset-env":                         "7.12.17",
+        "@babel/plugin-transform-runtime":           "7.12.17",
+        "mocha":                                     "8.3.0",
+        "chai":                                      "4.3.0"
     },
     "scripts": {
         "prepublishOnly":  "grunt default",
