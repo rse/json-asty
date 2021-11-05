@@ -21,18 +21,15 @@
 **  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 **  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+declare class JsonAsty {
+    /*  parse JSON into AST  */
+    static parse(json: string): object;
 
-declare module "JsonAsty" {
-    class JsonAsty {
-        /*  parse JSON into AST  */
-        static parse(json: string): object;
+    /*  dump AST  */
+    static dump(ast: object, options?: { colors?: boolean }): string;
 
-        /*  dump AST  */
-        static dump(ast: object, options?: { colors?: boolean }): string;
-
-        /*  unparse AST into JSON  */
-        static unparse(ast: object): string;
-    }
-    export = JsonAsty
+    /*  unparse AST into JSON  */
+    static unparse(ast: object): string;
 }
 
+export = JsonAsty
