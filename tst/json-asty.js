@@ -40,8 +40,9 @@ describe("JSON-ASTy Library", () => {
             "true", "false", "null",
             "42", "42.7", "42.7e-10",
             '"foo"', '"foo bar"', '"foo\\"bar"',
-            '[ { "a": "foo"}, {"a": 42}, {"a": 42.7}, {"a": true} ]',
             '[ "foo", 42, 42.7, true ]',
+            '[ { "a": "foo"}, {"a": 42}, {"a": 42.7}, {"a": true} ]',
+            '[ { "a": "foo"}, 42, 42.7, {"a": 42}, {"a": 42.7}, {"a": true} ]',
             '{ "foo": "foo", "bar": 42, "baz": 42.7, "quux": true }',
             '{ "foo": { "bar": [ "baz", "quux" ] } }'
         ]
