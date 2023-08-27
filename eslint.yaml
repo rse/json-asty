@@ -34,8 +34,6 @@ parserOptions:
     ecmaFeatures:
         jsx:     false
 
-parser: babel-eslint
-
 env:
     browser:       true
     node:          true
@@ -64,4 +62,5 @@ rules:
     curly:                               off
     space-in-parens:                     off
     node/no-path-concat:                 off
+    n/no-path-concat:                    off
 
