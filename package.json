@@ -18,7 +18,7 @@
     "homepage": "https://github.com/rse/json-asty",
     "bugs":     "https://github.com/rse/json-asty/issues",
     "dependencies": {
-        "asty-astq":                                 "1.13.6",
+        "asty-astq":                                 "1.13.7",
         "pegjs-otf":                                 "1.2.20",
         "pegjs-util":                                "1.4.21",
         "chalk":                                     "4.1.2"
