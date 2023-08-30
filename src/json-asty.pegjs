@@ -54,7 +54,8 @@ valueObject
                 member
             )* {
                 return tail.reduce((memo, curr) => {
-                    memo[memo.length - 1].set({ epilog: curr[0] })
+                    const epilog = memo[memo.length - 1].get("epilog") || ""
+                    memo[memo.length - 1].set({ epilog: epilog + curr[0] })
                     return memo.concat([ curr[1] ])
                 }, [ head ])
             }
@@ -83,7 +84,8 @@ valueArray
                 value /* RECURSION */
             )* {
                 return tail.reduce((memo, curr) => {
-                    memo[memo.length - 1].set({ epilog: curr[0] })
+                    const epilog = memo[memo.length - 1].get("epilog") || ""
+                    memo[memo.length - 1].set({ epilog: epilog + curr[0] })
                     return memo.concat([ curr[1] ])
                 }, [ head ])
             }
