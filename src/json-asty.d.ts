@@ -33,6 +33,7 @@ declare module "JsonAsty" {
         /*  unparse AST into JSON  */
         static unparse(ast: object): string;
     }
-    export = JsonAsty
 }
+
+export = JsonAsty.JsonAsty
 
