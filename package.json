@@ -1,6 +1,6 @@
 {
     "name":        "json-asty",
-    "version":     "1.0.8",
+    "version":     "1.1.0",
     "description": "Lossless JSON-to-AST Parser and AST-to-JSON Generator",
     "keywords":    [ "json", "ast", "parse", "generate" ],
     "browser":     "./lib/json-asty.browser.js",
