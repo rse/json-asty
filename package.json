@@ -5,6 +5,7 @@
     "keywords":    [ "json", "ast", "parse", "generate" ],
     "browser":     "./lib/json-asty.browser.js",
     "main":        "./lib/json-asty.node.js",
+    "types":       "./src/json-asty.d.ts",
     "repository": {
         "type": "git",
         "url":  "https://github.com/rse/json-asty.git"
