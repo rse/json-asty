@@ -3,13 +3,13 @@
     "version":     "1.1.0",
     "description": "Lossless JSON-to-AST Parser and AST-to-JSON Generator",
     "keywords":    [ "json", "ast", "parse", "generate" ],
-    "browser":     "./lib/json-asty.browser.js",
-    "main":        "./lib/json-asty.node.js",
-    "types":       "./src/json-asty.d.ts",
-    "bin":         { "json-asty": "./src/json-asty.cli.js" },
+    "browser":     "lib/json-asty.browser.js",
+    "main":        "lib/json-asty.node.js",
+    "types":       "src/json-asty.d.ts",
+    "bin":         { "json-asty": "src/json-asty.cli.js" },
     "repository": {
         "type": "git",
-        "url":  "https://github.com/rse/json-asty.git"
+        "url":  "git+https://github.com/rse/json-asty.git"
     },
     "author": {
         "name":  "Dr. Ralf S. Engelschall",
