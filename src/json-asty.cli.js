@@ -50,7 +50,7 @@ const get = async (file, path) => {
         throw new Error(`path not found (no AST nodes matched): "${path}"`)
     if (nodes.length > 1)
         throw new Error(`path is ambigous (more than one AST node matched): "${path}"`)
-    let node = nodes[0]
+    const node = nodes[0]
 
     /*  deliver value  */
     const value = node.get("value")
@@ -71,7 +71,7 @@ const set = async (file, path, type, value) => {
         throw new Error(`path not found (no AST nodes matched): "${path}"`)
     if (nodes.length > 1)
         throw new Error(`path is ambigous (more than one AST node matched): "${path}"`)
-    let node = nodes[0]
+    const node = nodes[0]
 
     /*  replace value  */
     if (type === "number")
