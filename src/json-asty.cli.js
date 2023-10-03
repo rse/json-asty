@@ -23,96 +23,130 @@
 **  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-const fs       = require("fs")
+/*  external requirements  */
+const yargs    = require("yargs")
+const CLIio    = require("cli-io")
 const JsonAsty = require("..")
 
-/*  convert object path to XPath  */
-const opath2xpath = (opath) => {
-    let xpath = ""
-    const segments = opath.split(".")
-    for (const segment of segments)
-        xpath += `object / member [ / * [ pos() == 1 && @value == "${segment}" ] ] /`
-    xpath += " * [ pos() == 2 ]"
-    return xpath
-}
+/*  establish CLI environment  */
+const cli = new CLIio({
+    encoding:  "utf8",
+    logLevel:  "warning",
+    logPrefix: "json-asty",
+    logTime:   false
+})
 
-const get = async (file, path) => {
-    /*  read JSON file  */
-    const json = await fs.promises.readFile(file, { encoding: "utf8" })
-
-    /*  parse JSON file  */
-    const ast = JsonAsty.parse(json)
-
-    /*  query JSON AST  */
-    const query = opath2xpath(path)
-    const nodes = ast.query(query)
-    if (nodes.length === 0)
-        throw new Error(`path not found (no AST nodes matched): "${path}"`)
-    if (nodes.length > 1)
-        throw new Error(`path is ambigous (more than one AST node matched): "${path}"`)
-    const node = nodes[0]
-
-    /*  deliver value  */
-    const value = node.get("value")
-    process.stdout.write(value + "\n")
-}
-
-const set = async (file, path, type, value) => {
-    /*  read JSON file  */
-    const json = await fs.promises.readFile(file, { encoding: "utf8" })
-
-    /*  parse JSON file  */
-    const ast = JsonAsty.parse(json)
-
-    /*  query JSON AST  */
-    const query = opath2xpath(path)
-    const nodes = ast.query(query)
-    if (nodes.length === 0)
-        throw new Error(`path not found (no AST nodes matched): "${path}"`)
-    if (nodes.length > 1)
-        throw new Error(`path is ambigous (more than one AST node matched): "${path}"`)
-    const node = nodes[0]
-
-    /*  replace value  */
-    if (type === "number")
-        value = parseInt(value)
-    else if (type === "boolean")
-        value = Boolean(value)
-    const nodeNew = node.create(type).set({ value })
-    node.parent().del(node).add(nodeNew)
-
-    /*  save JSON file  */
-    const jsonNew = JsonAsty.unparse(ast)
-    await fs.promises.writeFile(file, jsonNew, { encoding: "utf8" })
-}
-
+/*  execute in asynchronous context  */
 ;(async () => {
-    try {
-        /*  provide usage  */
-        if (process.argv.length <= 2) {
-            process.stderr.write("json-asty: USAGE: json-asty get <json-file> <object-path>\n")
-            process.stderr.write("json-asty: USAGE: json-asty set <json-file> <object-path> <type> <value>\n")
-            process.exit(0)
-        }
+    /*  load my own information  */
+    const my = require("../package.json")
 
-        /*  dispatch commands  */
-        if (process.argv[2] === "get") {
-            if (process.argv.length !== (3 + 2))
-                throw new Error("invalid number of arguments (expected 2)")
-            await get(process.argv[3], process.argv[4])
-        }
-        else if (process.argv[2] === "set") {
-            if (process.argv.length !== (3 + 4))
-                throw new Error("invalid number of arguments (expected 4)")
-            await set(process.argv[3], process.argv[4], process.argv[5], process.argv[6])
-        }
-        else
-            throw new Error("invalid command (expected 'get' or 'set')")
+    /*  command-line option parsing  */
+    const argv = yargs
+        .usage("Usage: $0 [-h] [-V] [-i input-file|-] [-o output-file|-] [-p object-path] [-t field-type] [-v field-value]")
+        .help("h").alias("h", "help").default("h", false)
+        .describe("h", "show usage help")
+        .boolean("V").alias("V", "version").default("V", false)
+        .describe("V", "show program version information")
+        .string("i").nargs("i", 1).alias("i", "input").default("i", "-")
+        .describe("i", "JSON input file (or stdin)")
+        .string("o").nargs("o", 1).alias("o", "output").default("o", "-")
+        .describe("o", "JSON output file (or stdout)")
+        .string("p").nargs("p", 1).alias("p", "path").default("p", "")
+        .describe("p", "dot-separated path to object field")
+        .string("t").nargs("t", 1).alias("t", "type").default("t", "string")
+        .describe("t", "type of object field (boolean, number, string)")
+        .string("v").nargs("v", 1).alias("v", "value").default("v", "")
+        .describe("v", "value of object field to set")
+        .strict()
+        .showHelpOnFail(true)
+        .demand(0)
+        .parse(process.argv.slice(2))
+
+    /*  short-circuit processing of "-V" command-line option  */
+    if (argv.version) {
+        process.stderr.write(my.name + " " + my.version + " <" + my.homepage + ">\n")
+        process.stderr.write(my.description + "\n")
+        process.stderr.write("Copyright (c) 2018-2023 " + my.author.name + " <" + my.author.url + ">\n")
+        process.stderr.write("Licensed under " + my.license + " <http://spdx.org/licenses/" + my.license + ".html>\n")
         process.exit(0)
     }
-    catch (ex) {
-        process.stderr.write(`json-asty: ERROR: ${ex.toString()}\n`)
-        process.exit(1)
+
+    /*  sanity check usage  */
+    if (!argv.path)
+        throw new Error("path to object field is required (see option -p|--path)")
+
+    /*  helper function: convert object path to XPath  */
+    const opath2xpath = (opath) => {
+        let xpath = ""
+        const segments = opath.split(".")
+        for (const segment of segments)
+            xpath += `object / member [ / * [ pos() == 1 && @value == "${segment}" ] ] /`
+        xpath += " * [ pos() == 2 ]"
+        return xpath
     }
-})()
+
+    /*  dispatch commands  */
+    if (!argv.value) {
+        /*  ==== GET OPERATION ====  */
+
+        /*  read input  */
+        const json = await cli.input(argv.input)
+
+        /*  parse JSON  */
+        const ast = JsonAsty.parse(json)
+
+        /*  query JSON AST  */
+        const query = opath2xpath(argv.path)
+        const nodes = ast.query(query)
+        if (nodes.length === 0)
+            throw new Error(`path not found (no AST nodes matched): "${argv.path}"`)
+        if (nodes.length > 1)
+            throw new Error(`path is ambigous (more than one AST node matched): "${argv.path}"`)
+        const node = nodes[0]
+
+        /*  fetch value  */
+        const value = node.get("value")
+
+        /*  write output  */
+        await cli.output(argv.output, `${value}\n`)
+    }
+    else {
+        /*  ==== SET OPERATION ====  */
+
+        /*  read input  */
+        const json = await cli.input(argv.input)
+
+        /*  parse JSON  */
+        const ast = JsonAsty.parse(json)
+
+        /*  query JSON AST  */
+        const query = opath2xpath(argv.path)
+        const nodes = ast.query(query)
+        if (nodes.length === 0)
+            throw new Error(`path not found (no AST nodes matched): "${argv.path}"`)
+        if (nodes.length > 1)
+            throw new Error(`path is ambigous (more than one AST node matched): "${argv.path}"`)
+        const node = nodes[0]
+
+        /*  replace value  */
+        let value = argv.value
+        if (argv.type === "number")
+            value = parseInt(value)
+        else if (argv.type === "boolean")
+            value = Boolean(value)
+        const nodeNew = node.create(argv.type).set({ value })
+        node.parent().del(node).add(nodeNew)
+
+        /*  unparse JSON  */
+        const jsonNew = JsonAsty.unparse(ast)
+
+        /*  write output  */
+        await cli.output(argv.output, jsonNew)
+    }
+})().catch((err) => {
+    const error = err.toString().replace(/^Error:\s+/, "")
+    cli.log("error", error)
+    process.exit(1)
+})
 
