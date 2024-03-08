@@ -20,12 +20,12 @@
     "homepage": "https://github.com/rse/json-asty",
     "bugs":     "https://github.com/rse/json-asty/issues",
     "dependencies": {
-        "asty-astq":                                 "1.13.7",
-        "pegjs-otf":                                 "1.2.20",
-        "pegjs-util":                                "1.4.21",
+        "asty-astq":                                 "1.14.0",
+        "pegjs-otf":                                 "2.0.2",
+        "pegjs-util":                                "2.0.1",
         "chalk":                                     "4.1.2",
         "yargs":                                     "17.7.2",
-        "cli-io":                                    "0.9.9"
+        "cli-io":                                    "0.9.11"
     },
     "devDependencies": {
         "grunt":                                     "1.6.1",
@@ -41,16 +41,16 @@
         "uglifyify":                                 "5.0.2",
         "browserify-header":                         "1.1.0",
         "browserify-derequire":                      "1.1.1",
-        "eslint":                                    "8.50.0",
+        "eslint":                                    "8.57.0",
         "eslint-config-standard":                    "17.1.0",
         "eslint-plugin-promise":                     "6.1.1",
-        "eslint-plugin-import":                      "2.28.1",
+        "eslint-plugin-import":                      "2.29.1",
         "eslint-plugin-node":                        "11.1.0",
-        "@babel/core":                               "7.23.0",
-        "@babel/preset-env":                         "7.22.20",
-        "@babel/plugin-transform-runtime":           "7.22.15",
-        "mocha":                                     "10.2.0",
-        "chai":                                      "4.3.10"
+        "@babel/core":                               "7.24.0",
+        "@babel/preset-env":                         "7.24.0",
+        "@babel/plugin-transform-runtime":           "7.24.0",
+        "mocha":                                     "10.3.0",
+        "chai":                                      "4.4.1"
     },
     "upd":                                           [ "!chalk" ],
     "scripts": {
