@@ -23,7 +23,7 @@
 */
 
 declare module "JsonAsty" {
-    class JsonAsty {
+    export default class JsonAsty {
         /*  parse JSON into AST  */
         static parse(json: string): object;
 
@@ -34,6 +34,4 @@ declare module "JsonAsty" {
         static unparse(ast: object): string;
     }
 }
-
-export = JsonAsty.JsonAsty
 
