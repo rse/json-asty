@@ -21,8 +21,8 @@
     "bugs":     "https://github.com/rse/json-asty/issues",
     "dependencies": {
         "asty-astq":                                 "1.14.0",
-        "pegjs-otf":                                 "2.0.2",
-        "pegjs-util":                                "2.0.1",
+        "pegjs-otf":                                 "2.0.3",
+        "pegjs-util":                                "2.0.2",
         "chalk":                                     "4.1.2",
         "yargs":                                     "17.7.2",
         "cli-io":                                    "0.9.13"
