@@ -132,10 +132,17 @@ const cli = new CLIio({
 
         /*  replace value  */
         let value = argv.value
-        if (argv.type === "number")
-            value = parseInt(value)
+        if (argv.type === "number") {
+            value = parseInt(value, 10)
+            if (isNaN(value))
+                throw new Error(`invalid number value: "${argv.value}"`)
+        }
         else if (argv.type === "boolean")
             value = Boolean(value)
+        else if (argv.type === "string")
+            value = String(value)
+        else
+            throw new Error(`invalid type: "${argv.type}" (expected: boolean, number, or string)`)
         const nodeNew = node.create(argv.type).set({ value })
         node.parent().del(node).add(nodeNew)
 
