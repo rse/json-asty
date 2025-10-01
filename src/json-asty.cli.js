@@ -88,6 +88,17 @@ const cli = new CLIio({
         return xpath
     }
 
+    /*  helper function: query AST and return single node  */
+    const queryAST = (ast, path) => {
+        const query = opath2xpath(path)
+        const nodes = ast.query(query)
+        if (nodes.length === 0)
+            throw new Error(`path not found (no AST nodes matched): "${path}"`)
+        if (nodes.length > 1)
+            throw new Error(`path is ambiguous (more than one AST node matched): "${path}"`)
+        return nodes[0]
+    }
+
     /*  dispatch commands  */
     if (!argv.value) {
         /*  ==== GET OPERATION ====  */
@@ -99,13 +110,7 @@ const cli = new CLIio({
         const ast = JsonAsty.parse(json)
 
         /*  query JSON AST  */
-        const query = opath2xpath(argv.path)
-        const nodes = ast.query(query)
-        if (nodes.length === 0)
-            throw new Error(`path not found (no AST nodes matched): "${argv.path}"`)
-        if (nodes.length > 1)
-            throw new Error(`path is ambigous (more than one AST node matched): "${argv.path}"`)
-        const node = nodes[0]
+        const node = queryAST(ast, argv.path)
 
         /*  fetch value  */
         const value = node.get("value")
@@ -123,13 +128,7 @@ const cli = new CLIio({
         const ast = JsonAsty.parse(json)
 
         /*  query JSON AST  */
-        const query = opath2xpath(argv.path)
-        const nodes = ast.query(query)
-        if (nodes.length === 0)
-            throw new Error(`path not found (no AST nodes matched): "${argv.path}"`)
-        if (nodes.length > 1)
-            throw new Error(`path is ambigous (more than one AST node matched): "${argv.path}"`)
-        const node = nodes[0]
+        const node = queryAST(ast, argv.path)
 
         /*  replace value  */
         let value = argv.value
