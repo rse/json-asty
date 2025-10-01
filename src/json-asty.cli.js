@@ -80,8 +80,10 @@ const cli = new CLIio({
     const opath2xpath = (opath) => {
         let xpath = ""
         const segments = opath.split(".")
-        for (const segment of segments)
-            xpath += `object / member [ / * [ pos() == 1 && @value == "${segment}" ] ] /`
+        for (const segment of segments) {
+            const escapedSegment = segment.replace(/"/g, "\\\"")
+            xpath += `object / member [ / * [ pos() == 1 && @value == "${escapedSegment}" ] ] /`
+        }
         xpath += " * [ pos() == 2 ]"
         return xpath
     }
