@@ -24,7 +24,7 @@
         "pegjs-otf":                                 "2.0.3",
         "pegjs-util":                                "2.0.2",
         "chalk":                                     "4.1.2",
-        "yargs":                                     "17.7.2",
+        "yargs":                                     "18.0.0",
         "cli-io":                                    "0.9.13"
     },
     "devDependencies": {
@@ -43,14 +43,14 @@
         "browserify-derequire":                      "1.1.1",
         "eslint":                                    "8.57.0",
         "eslint-config-standard":                    "17.1.0",
-        "eslint-plugin-promise":                     "6.2.0",
-        "eslint-plugin-import":                      "2.31.0",
+        "eslint-plugin-promise":                     "6.6.0",
+        "eslint-plugin-import":                      "2.32.0",
         "eslint-plugin-node":                        "11.1.0",
-        "@babel/core":                               "7.27.1",
-        "@babel/preset-env":                         "7.27.2",
-        "@babel/plugin-transform-runtime":           "7.27.1",
-        "mocha":                                     "11.2.2",
-        "chai":                                      "5.2.0"
+        "@babel/core":                               "7.28.4",
+        "@babel/preset-env":                         "7.28.3",
+        "@babel/plugin-transform-runtime":           "7.28.3",
+        "mocha":                                     "11.7.3",
+        "chai":                                      "6.2.0"
     },
     "upd":                                           [ "!chalk", "!eslint", "!grunt-eslint" ],
     "scripts": {
