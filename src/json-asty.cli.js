@@ -81,7 +81,7 @@ const cli = new CLIio({
         let xpath = ""
         const segments = opath.split(".")
         for (const segment of segments) {
-            const escapedSegment = segment.replace(/"/g, "\\\"")
+            const escapedSegment = segment.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")
             xpath += `object / member [ / * [ pos() == 1 && @value == "${escapedSegment}" ] ] /`
         }
         xpath += " * [ pos() == 2 ]"
@@ -137,8 +137,14 @@ const cli = new CLIio({
             if (isNaN(value))
                 throw new Error(`invalid number value: "${argv.value}"`)
         }
-        else if (argv.type === "boolean")
-            value = Boolean(value)
+        else if (argv.type === "boolean") {
+            if (value === "true")
+                value = true
+            else if (value === "false")
+                value = false
+            else
+                throw new Error(`invalid boolean value: "${argv.value}" (expected: "true" or "false")`)
+        }
         else if (argv.type === "string")
             value = String(value)
         else
