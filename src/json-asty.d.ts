@@ -22,7 +22,7 @@
 **  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-declare module "JsonAsty" {
+declare module "json-asty" {
     export default class JsonAsty {
         /*  parse JSON into AST  */
         static parse(json: string): object;
