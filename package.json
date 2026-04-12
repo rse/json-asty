@@ -46,11 +46,11 @@
         "eslint-plugin-promise":                     "6.6.0",
         "eslint-plugin-import":                      "2.32.0",
         "eslint-plugin-node":                        "11.1.0",
-        "@babel/core":                               "7.28.4",
-        "@babel/preset-env":                         "7.28.3",
-        "@babel/plugin-transform-runtime":           "7.28.3",
-        "mocha":                                     "11.7.4",
-        "chai":                                      "6.2.0"
+        "@babel/core":                               "7.29.0",
+        "@babel/preset-env":                         "7.29.2",
+        "@babel/plugin-transform-runtime":           "7.29.0",
+        "mocha":                                     "11.7.5",
+        "chai":                                      "6.2.2"
     },
     "upd":                                           [ "!chalk", "!eslint", "!grunt-eslint" ],
     "scripts": {
