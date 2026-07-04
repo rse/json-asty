@@ -27,9 +27,9 @@
 }
 
 json
-    =   prolog:ws?
+    =   prolog:$(ws?)
         value:value
-        epilog:ws?
+        epilog:$(ws?)
         eof {
             if (prolog) value.set("prolog", prolog + (value.get("prolog") || ""))
             if (epilog) value.set("epilog", (value.get("epilog") || "") + epilog)
