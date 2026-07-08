@@ -21,8 +21,8 @@
     "bugs":     "https://github.com/rse/json-asty/issues",
     "dependencies": {
         "asty-astq":                                 "1.14.0",
-        "pegjs-otf":                                 "2.0.3",
-        "pegjs-util":                                "2.0.2",
+        "pegjs-otf":                                 "2.1.0",
+        "pegjs-util":                                "2.1.0",
         "chalk":                                     "4.1.2",
         "yargs":                                     "18.0.0",
         "cli-io":                                    "0.9.13"
@@ -53,7 +53,7 @@
         "chai":                                      "6.2.2"
     },
     "allowScripts": {
-        "es5-ext":                                   true
+        "es5-ext":                                   false
     },
     "upd":                                           [ "!chalk", "!eslint", "!grunt-eslint" ],
     "scripts": {
