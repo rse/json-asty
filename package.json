@@ -20,7 +20,7 @@
     "homepage": "https://github.com/rse/json-asty",
     "bugs":     "https://github.com/rse/json-asty/issues",
     "dependencies": {
-        "asty-astq":                                 "1.14.0",
+        "asty-astq":                                 "1.14.1",
         "pegjs-otf":                                 "2.1.0",
         "pegjs-util":                                "2.1.0",
         "chalk":                                     "4.1.2",
@@ -40,7 +40,7 @@
         "babelify":                                  "10.0.0",
         "uglifyify":                                 "5.0.2",
         "browserify-header":                         "1.1.0",
-        "browserify-derequire":                      "1.1.1",
+        "browserify-derequire":                      "1.2.0",
         "eslint":                                    "8.57.0",
         "eslint-config-standard":                    "17.1.0",
         "eslint-plugin-promise":                     "6.6.0",
@@ -51,6 +51,9 @@
         "@babel/plugin-transform-runtime":           "7.29.7",
         "mocha":                                     "11.7.6",
         "chai":                                      "6.2.2"
+    },
+    "overrides": {
+        "escope":                                    "4.0.0"
     },
     "allowScripts": {
         "es5-ext":                                   false
