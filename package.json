@@ -24,8 +24,8 @@
         "pegjs-otf":                                 "2.1.0",
         "pegjs-util":                                "2.1.0",
         "chalk":                                     "4.1.2",
-        "yargs":                                     "18.0.0",
-        "cli-io":                                    "0.9.13"
+        "yargs":                                     "18.2.0",
+        "cli-io":                                    "0.9.14"
     },
     "devDependencies": {
         "grunt":                                     "1.6.2",
